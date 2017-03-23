@@ -3,15 +3,6 @@ import multiprocessing
 import requests
 from github import REPOS, ACCESS_TOKEN
 
-workers = 5
-start = time.time()
-q = multiprocessing.JoinableQueue()
-
-
-def load_queue():
-    for repo_url in REPOS:
-        q.put(repo_url)
-
 
 def grab_data_from_queue():
     while not q.empty():
@@ -26,10 +17,17 @@ def grab_data_from_queue():
         q.task_done()
 
 
-load_queue()
+workers = 5
+start = time.time()
+q = multiprocessing.JoinableQueue()
+
+for repo_url in REPOS:
+    q.put(repo_url)
+
 for i in range(workers):
     process = multiprocessing.Process(target=grab_data_from_queue)
     process.start()
+
 q.join()
 end = time.time()
 print('Tempo de execução={:.2f} segundos'.format(end - start))

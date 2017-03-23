@@ -4,15 +4,6 @@ import queue
 import requests
 from github import REPOS, ACCESS_TOKEN
 
-max_threads = 5
-start = time.time()
-q = queue.Queue()
-
-
-def load_queue():
-    for repo_url in REPOS:
-        q.put(repo_url)
-
 
 def grab_data_from_queue():
     while not q.empty():
@@ -27,10 +18,17 @@ def grab_data_from_queue():
         q.task_done()
 
 
-load_queue()
+max_threads = 5
+start = time.time()
+q = queue.Queue()
+
+for repo_url in REPOS:
+    q.put(repo_url)
+
 for i in range(max_threads):
     thread = threading.Thread(target=grab_data_from_queue)
     thread.start()
+
 q.join()
 end = time.time()
 print('Tempo de execução={:.2f} segundos'.format(end - start))
