@@ -1,5 +1,5 @@
 import time
-import asyncio
+import paco
 import aiohttp
 from github import REPOS, ACCESS_TOKEN
 
@@ -16,11 +16,7 @@ async def get_repo_info(repo_url):
             print(repo_info)
 
 start = time.time()
-loop = asyncio.get_event_loop()
-tasks = []
-for repo_url in REPOS:
-    task = asyncio.ensure_future(get_repo_info(repo_url))
-    tasks.append(task)
-loop.run_until_complete(asyncio.wait(tasks))
+tasks = [get_repo_info(repo_url) for repo_url in REPOS]
+paco.run(paco.wait(tasks, limit=10))
 end = time.time()
 print('Tempo de execução={:.2f} segundos'.format(end - start))

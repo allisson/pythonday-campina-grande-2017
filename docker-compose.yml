@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: pythonday
+      POSTGRES_PASSWORD: pythonday
+      PGPASSWORD: pythonday
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+  memcached:
+    image: memcached
+    ports:
+      - "11211:11211"
