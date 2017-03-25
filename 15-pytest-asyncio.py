@@ -19,11 +19,11 @@ async def test_get_repo_info_1():
     repo_info = await get_repo_info(REPOS[0])
     assert 'name' in repo_info
     assert 'full_name' in repo_info
-    assert 'stargazers_count'
+    assert 'stargazers_count' in repo_info
 
 
 def test_get_repo_info_2(event_loop):
     repo_info = event_loop.run_until_complete(get_repo_info(REPOS[0]))
     assert 'name' in repo_info
     assert 'full_name' in repo_info
-    assert 'stargazers_count'
+    assert 'stargazers_count' in repo_info
